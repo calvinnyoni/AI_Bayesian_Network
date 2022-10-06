@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 #read in data
-data = pd.read_csv("heart.csv", sep=",")
+data = pd.read_csv("data\heart.csv", sep=",")
 
 #gender/sex data
 gender = data.loc[:,"Sex"]
@@ -112,4 +112,15 @@ print(age_ecg_table)
 print("P(ChestPainType|ExerciseAngina) Tabulation")
 age_ecg_ptable = pd.crosstab(data['ChestPainType'], data['ExerciseAngina'], normalize="columns")
 print(age_ecg_ptable)
+print("--------------------------------------------------------------------")
+
+#heart disease data
+heartdisease = data.loc[:,"HeartDisease"]
+print("--------------------------------------------------------------------")
+print("HeartDisease vs (RestingBP, MaxHR, Resting ECG) Counts")
+heart_disease_table = pd.crosstab(data['HeartDisease'], [data['RestingBP_Ranges'], data['MaxHeartRate_Ranges'], data['RestingECG']])
+print(heart_disease_table)
+print("P(HeartDisease|RestingBP, MaxHR, RestingECG) Tabulation")
+heart_disease_ptable = pd.crosstab(data['HeartDisease'], [data['RestingBP_Ranges'], data['MaxHeartRate_Ranges'], data['RestingECG']], normalize="columns")
+print(heart_disease_ptable)
 print("--------------------------------------------------------------------")
