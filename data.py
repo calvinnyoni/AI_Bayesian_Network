@@ -117,10 +117,10 @@ print("--------------------------------------------------------------------")
 #gender data
 gender = data.loc[:,"Sex"]
 print("--------------------------------------------------------------------")
-print("Chest Pain Type vs (Excercise-Induced Angina, HeartDisease) Counts")
+print("Sex vs HeartDisease Counts")
 gender_table = pd.crosstab(data["Sex"], data['HeartDisease'])
 print(gender_table)
-print("P(ChestPainType|ExerciseAngina, HeartDisease) Tabulation")
+print("P(Sex|HeartDisease) Tabulation")
 gender_ptable = pd.crosstab(data["Sex"], data['HeartDisease'], normalize="columns")
 print(gender_ptable)
 print("--------------------------------------------------------------------")
