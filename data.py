@@ -4,7 +4,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 #read in data
-data = pd.read_csv("data\heart.csv", sep=",")
+data = pd.read_csv("data\\training_data.csv", sep=",")
+print(data)
 
 #age data
 age = data.loc[:,"Age"]
