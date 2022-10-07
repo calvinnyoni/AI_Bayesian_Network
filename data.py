@@ -5,7 +5,12 @@ import matplotlib.pyplot as plt
 
 #read in data
 data = pd.read_csv("data\\training_data.csv", sep=",")
-print(data)
+#print(data)
+
+#pandas display options
+pd.set_option('display.max_columns', None)  # or 1000
+pd.set_option('display.max_rows', None)  # or 1000
+pd.set_option('display.max_colwidth', None)  # or 199
 
 #age data
 age = data.loc[:,"Age"]
@@ -20,17 +25,6 @@ print("Other stats")
 print("Mean : {} Median : {} ".format(np.mean(age), np.median(age)))
 print("Min : {} Max : {} ".format(np.amin(age), np.amax(age)))
 print("Lower Q : {}  Upper Q : {} ".format(np.quantile(age, 0.25), np.quantile(age, 0.5)))
-print("--------------------------------------------------------------------")
-
-#excercise-induced angina data
-angina = data.loc[:,"ExerciseAngina"]
-angina_counts = angina.value_counts()
-norm_angina_counts = angina.value_counts(normalize=True)
-print("--------------------------------------------------------------------")
-print("Angina Counts")
-print(angina_counts)
-print("P(ExerciseAngina)")
-print(norm_angina_counts)
 print("--------------------------------------------------------------------")
 
 #cholesterol data
@@ -70,7 +64,7 @@ print("--------------------------------------------------------------------")
 maxheartrate = data.loc[:,"MaxHR"]
 print("--------------------------------------------------------------------")
 print("Max Heart Rate vs (Age, RestingBP) Counts")
-data['MaxHeartRate_Ranges'] = pd.cut(data["MaxHR"], [60, 140, 175, 220]) #column for bins of max heart rate for cross tabulation
+data['MaxHeartRate_Ranges'] = pd.cut(data["MaxHR"], [60, 100, 175, 220]) #column for bins of max heart rate for cross tabulation
 age_maxhr_table = pd.crosstab(data['MaxHeartRate_Ranges'], [data['Age_Ranges'], data['RestingBP_Ranges']])
 print(age_maxhr_table)
 print("P(MaxHeartRate|Age, Resting BP) Tabulation")
@@ -107,11 +101,11 @@ print("--------------------------------------------------------------------")
 #chest pain type data
 chestpain = data.loc[:,"ChestPainType"]
 print("--------------------------------------------------------------------")
-print("Chest Pain Type vs (Excercise-Induced Angina, HeartDisease) Counts")
-chest_pain_table = pd.crosstab(data['ChestPainType'], [data['ExerciseAngina'], data['HeartDisease']])
+print("Chest Pain Type vs HeartDisease Counts")
+chest_pain_table = pd.crosstab(data['ChestPainType'], data['HeartDisease'])
 print(chest_pain_table)
-print("P(ChestPainType|ExerciseAngina, HeartDisease) Tabulation")
-chest_pain_ptable = pd.crosstab(data['ChestPainType'], [data['ExerciseAngina'], data['HeartDisease']], normalize="columns")
+print("P(ChestPainType|HeartDisease) Tabulation")
+chest_pain_ptable = pd.crosstab(data['ChestPainType'], data['HeartDisease'], normalize="columns")
 print(chest_pain_ptable)
 print("--------------------------------------------------------------------")
 
