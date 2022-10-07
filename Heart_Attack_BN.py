@@ -10,7 +10,7 @@ mhr=bn.add(gum.LabelizedVariable('m','Max Heart Rate Achieved',["60-140", "141-1
 ecg=bn.add(gum.LabelizedVariable('ecg','Resting ECG',["Normal", "ST", "LVH"]))
 e=bn.add(gum.LabelizedVariable  ('e','Exercise Induced Angina',["N", "Y"]))
 s=bn.add(gum.LabelizedVariable  ('s','Sex',["F", "M"]))
-h=bn.add(gum.LabelizedVariable  ('h','Heart Disease',["N", "Y"]))
+h=bn.add(gum.LabelizedVariable  ('h','Heart Disease',2))
 cp=bn.add(gum.LabelizedVariable ('cp','Chest Pain',["TA", "ATA", "NAP", "ASY"]))
 
 # Defining Arcs (top->bottom, left->right)
@@ -31,17 +31,20 @@ print(bn.cpt(c))
 
 #RestingBP | (Cholesterol, Age)
 bn.cpt(bp)[{'c': 0, 'a': 0}] = [0.500000, 0.289474, 0.210526]
-bn.cpt(bp)[{'c': 0, 'a': 1}] = [0.500000, 0.289474, 0.210526]
-bn.cpt(bp)[{'c': 0, 'a': 2}] = [0.500000, 0.289474, 0.210526]
+bn.cpt(bp)[{'c': 0, 'a': 1}] = [0.3500, 0.2875, 0.3625]
+bn.cpt(bp)[{'c': 0, 'a': 2}] = [0.103448, 0.310345, 0.586207]
 
-bn.cpt(bp)[{'c': 1, 'a': 0}] = [0.500000, 0.289474, 0.210526]
-bn.cpt(bp)[{'c': 1, 'a': 1}] = [0.500000, 0.289474, 0.210526]
-bn.cpt(bp)[{'c': 1, 'a': 2}] = [0.500000, 0.289474, 0.210526]
+bn.cpt(bp)[{'c': 1, 'a': 0}] = [0.538462, 0.282051, 0.179487]
+bn.cpt(bp)[{'c': 1, 'a': 1}] = [0.289474, 0.434211, 0.276316]
+bn.cpt(bp)[{'c': 1, 'a': 2}] = [0.22, 0.24, 0.54]
 
-bn.cpt(bp)[{'c': 2, 'a': 0}] = [0.500000, 0.289474, 0.210526]
-bn.cpt(bp)[{'c': 2, 'a': 1}] = [0.500000, 0.289474, 0.210526]
-bn.cpt(bp)[{'c': 2, 'a': 2}] = [0.500000, 0.289474, 0.210526]
+bn.cpt(bp)[{'c': 2, 'a': 0}] = [0.516129, 0.241935, 0.241935]
+bn.cpt(bp)[{'c': 2, 'a': 1}] = [0.227979, 0.378238, 0.252525]
+bn.cpt(bp)[{'c': 2, 'a': 2}] = [0.241935, 0.393782, 0.525253]
 print(bn.cpt(bp))
+
+ie=gum.VariableElimination(bn)
+gnb.showInference(bn,evs={'c': 'Y'}, engine=ie)
 
 # bn.cpt(c)[0] = [0.043478, 0.869565, 0.086957]
 # bn.cpt(c)[1] = [0.021186, 0.877119, 0.101695]
