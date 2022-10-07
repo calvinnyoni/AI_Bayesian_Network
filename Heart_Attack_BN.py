@@ -19,8 +19,7 @@ for link in [   (a,bp), (a,mhr),                                #Top row
                 (h,s), (h, cp)]:                                #Bot row
     bn.addArc(*link)
 
-### Adding weights (breadth-first order)
-
+### Adding weights (top->bottom, left->right)
 #Age
 bn.cpt(a).fillWith([0.193900, 0.240741, 0.565359])
 print(bn.cpt(a))
@@ -43,16 +42,25 @@ bn.cpt(bp)[{'c': 2, 'a': 1}] = [0.227979, 0.378238, 0.252525]
 bn.cpt(bp)[{'c': 2, 'a': 2}] = [0.241935, 0.393782, 0.525253]
 print(bn.cpt(bp))
 
+#Heart Rate | (Resting Blood Pressure, Age)
+bn.cpt(mhr)[{'a': 0, 'bp': 0}] = [0.500000, 0.289474, 0.210526]
+bn.cpt(mhr)[{'a': 0, 'bp': 1}] = [0.500000, 0.289474, 0.210526]
+bn.cpt(mhr)[{'a': 0, 'bp': 2}] = [0.500000, 0.289474, 0.210526]
+
+bn.cpt(mhr)[{'a': 1, 'bp': 0}] = [0.500000, 0.289474, 0.210526]
+bn.cpt(mhr)[{'a': 1, 'bp': 1}] = [0.500000, 0.289474, 0.210526]
+bn.cpt(mhr)[{'a': 1, 'bp': 2}] = [0.500000, 0.289474, 0.210526]
+
+bn.cpt(mhr)[{'a': 2, 'bp': 0}] = [0.500000, 0.289474, 0.210526]
+bn.cpt(mhr)[{'a': 2, 'bp': 1}] = [0.500000, 0.289474, 0.210526]
+bn.cpt(mhr)[{'a': 2, 'bp': 2}] = [0.500000, 0.289474, 0.210526]
+print(bn.cpt(mhr))
+
+# Testing ability to make inferences using given probabilities
 ie=gum.VariableElimination(bn)
-gnb.showInference(bn,evs={'c': 'Y'}, engine=ie)
-
-# bn.cpt(c)[0] = [0.043478, 0.869565, 0.086957]
-# bn.cpt(c)[1] = [0.021186, 0.877119, 0.101695]
-# bn.cpt(c)[2] = [0.020772, 0.839763, 0.139466]
-
-
-
-#Exercise induced Angina
+ie.setEvidence({bp:0, a:2})
+ie.makeInference()
+print(ie.posterior("c"))
 
 # Saving network as bifxml file
 gum.saveBN(bn,"Heart_Attack_BN.bifxml")
