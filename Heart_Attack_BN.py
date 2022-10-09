@@ -14,7 +14,7 @@ mhr=bn.add(gum.LabelizedVariable('mhr','Max Heart Rate Achieved',["60-100", "101
 ecg=bn.add(gum.LabelizedVariable('ecg','Resting ECG',["Normal", "ST", "LVH"]))
 s=bn.add(gum.LabelizedVariable  ('sex','Sex',["F", "M"]))
 h=bn.add(gum.LabelizedVariable  ('hd','Heart Disease',2))
-cp=bn.add(gum.LabelizedVariable ('cp','Chest Pain',["TA", "ATA", "NAP", "ASY"]))
+cp=bn.add(gum.LabelizedVariable ('cp','Chest Pain',["ASY", "ATA", "NAP", "TA"]))
 
 # Defining Arcs (top->bottom, left->right)
 for link in [   (a,bp), (a,mhr),                                #Top row
@@ -79,7 +79,7 @@ print(bn.cpt(h))
 
 #P(ChestPainType|HeartDisease)
 bn.cpt(cp)[{'hd': 0}] = [0.2550, 0.3675, 0.3175, 0.0600]
-bn.cpt(cp)[{'hd': 1}] = [0.771203, 0.047337, 0.142012, 0.039448]
+bn.cpt(cp)[{'hd': 1}] = [0.771203, 0.047337, 0.142012, 0.39448]
 print(bn.cpt(cp))
 
 #P(Sex|HeartDisease)

@@ -14,7 +14,7 @@ mhr=dn.add(gum.LabelizedVariable('mhr','Max Heart Rate Achieved',["60-100", "101
 ecg=dn.add(gum.LabelizedVariable('ecg','Resting ECG',["Normal", "ST", "LVH"]))
 s=dn.add(gum.LabelizedVariable  ('sex','Sex',["F", "M"]))
 h=dn.add(gum.LabelizedVariable  ('hd','Heart Disease',2))
-cp=dn.add(gum.LabelizedVariable ('cp','Chest Pain',["TA", "ATA", "NAP", "ASY"]))
+cp=dn.add(gum.LabelizedVariable ('cp','Chest Pain',["ASY", "ATA", "NAP", "TA"]))
 
 # Defining Arcs (top->bottom, left->right)
 for link in [   (a,bp), (a,mhr),                                #Top row
@@ -24,7 +24,7 @@ for link in [   (a,bp), (a,mhr),                                #Top row
 
 ## Special Nodes
 # Decision Node
-decision = dn.addDecisionNode(gum.LabelizedVariable("VisitDoctor", "VisitDoctor", ["Visit Doctor", "Don't Visit Doctor"]))
+decision = dn.addDecisionNode(gum.LabelizedVariable("VisitDoctor", "VisitDoctor", ["Don't Visit Doctor", "Visit Doctor"]))
 #  Utility Node
 u = dn.addUtilityNode(gum.LabelizedVariable("U", "Utility", 1))
 
@@ -88,8 +88,9 @@ dn.cpt(h)[{'mhr': 2, 'ecg': 2}] = [0.8, 0.2]
 print(dn.cpt(h))
 
 #P(ChestPainType|HeartDisease)
+#cp=dn.add(gum.LabelizedVariable ('cp','Chest Pain',["ASY", "ATA", "NAP", "TA"]))
 dn.cpt(cp)[{'hd': 0}] = [0.2550, 0.3675, 0.3175, 0.0600]
-dn.cpt(cp)[{'hd': 1}] = [0.771203, 0.047337, 0.142012, 0.039448]
+dn.cpt(cp)[{'hd': 1}] = [0.771203, 0.047337, 0.142012, 0.39448]
 print(dn.cpt(cp))
 
 #P(Sex|HeartDisease)
@@ -98,10 +99,10 @@ dn.cpt(s)[{'hd': 1}] = [0.098619, 0.901381]
 print(dn.cpt(s))
 
 #Utilty table
-dn.utility("U")[{'VisitDoctor':0,'hd':0}] = -22100 
-dn.utility("U")[{'VisitDoctor':0,'hd':1}] = -1100
-dn.utility("U")[{'VisitDoctor':1,'hd':0}] = -50000
-dn.utility("U")[{'VisitDoctor':1,'hd':1}] = 0
+dn.utility("U")[{'VisitDoctor':0,'hd':0}] =  0
+dn.utility("U")[{'VisitDoctor':0,'hd':1}] = -50000
+dn.utility("U")[{'VisitDoctor':1,'hd':0}] = -1100
+dn.utility("U")[{'VisitDoctor':1,'hd':1}] = -22100
 
 plt.imshow(gimg.export(dn))
 plt.show()
@@ -112,7 +113,7 @@ plt.show()
 ie = gum.ShaferShenoyLIMIDInference(dn)
 ie.setEvidence({bp:2, a:0})
 ie.makeInference()
-ie.optimalDecision("VisitDoctor")
+print(ie.optimalDecision("VisitDoctor"))
 print(ie.posteriorUtility("VisitDoctor"))
 
 # Saving network as bifxml file
